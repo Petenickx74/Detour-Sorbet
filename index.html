@@ -82,7 +82,12 @@
       width: 40px; height: 40px;
       background: var(--color-mango);
     }
-
+      /* Hide custom cursor on mobile/touch devices */
+    @media (max-width: 768px) {
+    .cursor {
+      display: none;}
+    }
+    
     /* ============================================================
        NAVIGATION
        ============================================================ */
