@@ -26,6 +26,13 @@
         font-weight: normal;
         font-style: normal;
       }
+
+    @font-face {
+        font-family: 'VSJohnMuirSans';
+        src: url('fonts/VSJohnMuirSans.otf') format('opentype');
+        font-weight: normal;
+        font-style: normal;
+      }
     
     :root {
       --color-cream:      #fdf8f2;   /* page background */
@@ -108,7 +115,7 @@
     }
 
     /* ============================================================
-       CUSTOMIZE: Replace "Sorbetta" with your actual brand name
+       CUSTOMIZE: Replace with your actual brand name
        ============================================================ */
    .nav-logo {
       font-family: 'NationalForest', var(--font-display);
@@ -119,8 +126,9 @@
     }
     /* 1px white outline on the logo ONLY in the footer */
     footer .nav-logo {
+      font-family: 'VSJohnMuirSans', var(--font-display);
       text-shadow:
-      1.5px  0px 0px #f5c9b3,
+      1.5px  0px 0px #f5c9b3,'VSJohnMuirSans'
        -2px  0px 0px #f5c9b3,
         0px  1.5px 0px #f5c9b3,
         0px -2px 0px #f5c9b3
