@@ -127,11 +127,7 @@
     /* 1px white outline on the logo ONLY in the footer */
     footer .nav-logo {
       font-family: 'VSJohnMuirSans', var(--font-display);
-      text-shadow:
-      1.5px  0px 0px #f5c9b3,
-       -2px  0px 0px #f5c9b3,
-        0px  1.5px 0px #f5c9b3,
-        0px -2px 0px #f5c9b3
+      -webkit-text-stroke: 1px #f5c9b3;
     }
     .nav-links {
       display: flex;
@@ -1449,7 +1445,7 @@
       <div class="footer-col">
         <h4>Explore</h4>
         <ul>
-          <li><a href="#about">Our Story</a></li>
+          <!--<li><a href="#about">Our Story</a></li>-->
           <li><a href="#flavors">Flavors</a></li>
           <li><a href="#process">How We Make It</a></li>
           <!--<li><a href="#findus">Find Us</a></li>-->
