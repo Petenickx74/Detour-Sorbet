@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Allergen Info — Detour Sorbet</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    @font-face {
+      font-family: 'NationalForest';
+      src: url('fonts/NationalForest.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    :root {
+      --color-cream:    #fdf8f2;
+      --color-blush:    #f5c9b3;
+      --color-coral:    #e8705a;
+      --color-mango:    #f5a623;
+      --color-dark:     #2c1f1a;
+      --color-mid:      #7a5c52;
+      --color-light:    #f0e8e0;
+      --font-display:   'Cormorant Garamond', serif;
+      --font-body:      'DM Sans', sans-serif;
+      --transition:     0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--color-cream);
+      color: var(--color-dark);
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* NAVBAR */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 4rem;
+      background: rgba(253, 248, 242, 0.92);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 2px 24px rgba(44, 31, 26, 0.07);
+    }
+
+    .nav-logo {
+      font-family: 'NationalForest', var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--color-coral);
+      letter-spacing: 0.02em;
+    }
+
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--color-mid);
+      letter-spacing: 0.05em;
+      transition: color var(--transition);
+    }
+    .nav-back:hover { color: var(--color-coral); }
+
+    /* PAGE HERO */
+    .page-hero {
+      padding: 9rem 4rem 4rem;
+      background: var(--color-light);
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, var(--color-blush) 0%, transparent 70%);
+      border-radius: 50%;
+      opacity: 0.5;
+    }
+    .page-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; left: 5%;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, #a8d5ba 0%, transparent 70%);
+      border-radius: 50%;
+      opacity: 0.35;
+    }
+
+    .page-eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-coral);
+      margin-bottom: 1rem;
+      position: relative;
+      padding-left: 2rem;
+      z-index: 1;
+    }
+    .page-eyebrow::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 50%;
+      width: 1.4rem; height: 1px;
+      background: var(--color-coral);
+    }
+
+    .page-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 0.8rem;
+      position: relative;
+      z-index: 1;
+    }
+    .page-title em {
+      font-style: italic;
+      color: var(--color-coral);
+    }
+
+    .page-date {
+      font-size: 0.82rem;
+      color: var(--color-mid);
+      font-weight: 300;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* CONTENT */
+    .policy-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 5rem 4rem 7rem;
+    }
+
+    .policy-section {
+      margin-bottom: 3rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .policy-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .policy-section h2 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--color-dark);
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--color-blush);
+    }
+
+    .policy-section p {
+      font-size: 0.97rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--color-mid);
+    }
+
+    /* Warning block */
+    .allergen-warning {
+      margin-bottom: 2.5rem;
+      padding: 1.5rem 2rem;
+      background: #fff8f0;
+      border-left: 4px solid var(--color-mango);
+      border-radius: 0 12px 12px 0;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .allergen-warning.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .allergen-warning p {
+      font-size: 0.95rem;
+      font-weight: 400;
+      line-height: 1.75;
+      color: var(--color-dark);
+    }
+    .allergen-warning strong {
+      color: var(--color-coral);
+    }
+
+    /* Allergen flavor grid */
+    .allergen-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .allergen-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.2rem 1.4rem;
+      border-top: 3px solid var(--color-blush);
+      transition: box-shadow var(--transition), transform var(--transition);
+    }
+    .allergen-card:hover {
+      box-shadow: 0 8px 24px rgba(44, 31, 26, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .allergen-card-name {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin-bottom: 0.6rem;
+      color: var(--color-dark);
+    }
+
+    .allergen-tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .allergen-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      border-radius: 50px;
+      background: var(--color-light);
+      color: var(--color-mid);
+    }
+    .allergen-tag.contains {
+      background: #fde8d8;
+      color: #b84a2a;
+    }
+    .allergen-tag.may-contain {
+      background: #fff3d6;
+      color: #a06a00;
+    }
+    .allergen-tag.free {
+      background: #e4f5ec;
+      color: #2a7a4a;
+    }
+
+    /* Legend */
+    .legend {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+      padding: 1rem 1.5rem;
+      background: var(--color-light);
+      border-radius: 10px;
+      align-items: center;
+    }
+    .legend-title {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-mid);
+      margin-right: 0.5rem;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      color: var(--color-mid);
+    }
+
+    /* Contact block */
+    .contact-block {
+      margin-top: 1rem;
+      padding: 1.2rem 1.5rem;
+      background: var(--color-light);
+      border-left: 3px solid var(--color-coral);
+      border-radius: 0 8px 8px 0;
+    }
+    .contact-block p {
+      margin-bottom: 0.3rem;
+      font-size: 0.9rem;
+    }
+    .contact-block a {
+      color: var(--color-coral);
+      transition: opacity var(--transition);
+    }
+    .contact-block a:hover { opacity: 0.75; }
+
+    /* Note */
+    .policy-note {
+      margin-top: 3rem;
+      padding: 1.5rem 2rem;
+      background: var(--color-light);
+      border-radius: 12px;
+      font-size: 0.85rem;
+      color: var(--color-mid);
+      line-height: 1.7;
+      font-style: italic;
+    }
+
+    /* Legal nav links */
+    .legal-nav {
+      display: flex;
+      gap: 1rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--color-blush);
+      flex-wrap: wrap;
+    }
+    .legal-nav a {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--color-coral);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: opacity var(--transition);
+    }
+    .legal-nav a:hover { opacity: 0.7; }
+
+    /* FOOTER */
+    footer {
+      background: var(--color-dark);
+      color: rgba(253, 248, 242, 0.6);
+      padding: 3rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    footer .nav-logo {
+      text-shadow:
+         1px  0px 0px white,
+        -1px  0px 0px white,
+         0px  1px 0px white,
+         0px -1px 0px white;
+    }
+
+    .footer-legal {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.78rem;
+    }
+    .footer-legal a { transition: color var(--transition); }
+    .footer-legal a:hover { color: var(--color-coral); }
+    .footer-copy { font-size: 0.78rem; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 2rem; }
+      .page-hero { padding: 8rem 2rem 3rem; }
+      .policy-wrap { padding: 3rem 2rem 5rem; }
+      footer { padding: 2rem; flex-direction: column; text-align: center; }
+      .footer-legal { justify-content: center; }
+      .legend { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <a href="index.html" class="nav-logo">Detour Sorbet</a>
+    <a href="index.html" class="nav-back">← Back to site</a>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="page-hero">
+    <span class="page-eyebrow">Health &amp; Safety</span>
+    <h1 class="page-title">Allergen <em>Info</em></h1>
+    <p class="page-date">Last updated: April 2025</p>
+  </div>
+
+  <!-- ALLERGEN CONTENT -->
+  <div class="policy-wrap">
+
+    <!-- Warning banner -->
+    <div class="allergen-warning">
+      <p><strong>Important:</strong> Our sorbets are produced in a shared kitchen environment that handles common allergens including tree nuts, peanuts, and dairy. While many of our flavors are naturally free of these ingredients, cross-contact cannot be fully guaranteed. If you have a severe food allergy, please contact us directly before ordering.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>Our Approach to Allergens</h2>
+      <p>We believe in full transparency about what goes into our sorbets. We use as few ingredients as possible — fruit, water, and sugar form the base of most of our flavors. However, some flavors include nuts, nut-based ingredients, or dairy, and all products are made in a shared kitchen. We take reasonable precautions to prevent cross-contact, but we cannot certify any product as completely allergen-free.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>Flavor Allergen Guide</h2>
+      <p>The information below reflects our current recipes. Recipes and ingredients may change seasonally — always confirm with us directly if you have concerns.</p>
+
+      <!-- Legend -->
+      <div class="legend" style="margin-top: 1.2rem;">
+        <span class="legend-title">Key:</span>
+        <div class="legend-item">
+          <span class="allergen-tag contains">Contains</span>
+          <span>present in recipe</span>
+        </div>
+        <div class="legend-item">
+          <span class="allergen-tag may-contain">May Contain</span>
+          <span>shared kitchen risk</span>
+        </div>
+        <div class="legend-item">
+          <span class="allergen-tag free">Free From</span>
+          <span>not in recipe</span>
+        </div>
+      </div>
+
+      <!-- Allergen cards per flavor -->
+      <!-- CUSTOMIZE: Update each flavor's allergen tags to reflect
+           your actual recipes. Add or remove cards as needed. -->
+      <div class="allergen-grid">
+
+        <div class="allergen-card">
+          <div class="allergen-card-name">Pistachio</div>
+          <div class="allergen-tag-list">
+            <span class="allergen-tag contains">Tree Nuts</span>
+            <span class="allergen-tag free">Dairy-Free</span>
+            <span class="allergen-tag free">Gluten-Free</span>
+            <span class="allergen-tag may-contain">Peanuts</span>
+          </div>
+        </div>
+
+        <div class="allergen-card">
+          <div class="allergen-card-name">Chocolate Almond</div>
+          <div class="allergen-tag-list">
+            <span class="allergen-tag contains">Tree Nuts</span>
+            <span class="allergen-tag free">Dairy-Free</span>
+            <span class="allergen-tag free">Gluten-Free</span>
+            <span class="allergen-tag may-contain">Peanuts</span>
+          </div>
+        </div>
+
+        <div class="allergen-card">
+          <div class="allergen-card-name">Diner Coffee</div>
+          <div class="allergen-tag-list">
+            <span class="allergen-tag free">Nut-Free</span>
+            <span class="allergen-tag free">Dairy-Free</span>
+            <span class="allergen-tag free">Gluten-Free</span>
+            <span class="allergen-tag may-contain">Tree Nuts</span>
+          </div>
+        </div>
+
+        <div class="allergen-card">
+          <div class="allergen-card-name">PB&amp;J</div>
+          <div class="allergen-tag-list">
+            <span class="allergen-tag contains">Peanuts</span>
+            <span class="allergen-tag free">Dairy-Free</span>
+            <span class="allergen-tag free">Gluten-Free</span>
+          </div>
+        </div>
+
+        <div class="allergen-card">
+          <div class="allergen-card-name">Coconut</div>
+          <div class="allergen-tag-list">
+            <span class="allergen-tag contains">Tree Nuts</span>
+            <span class="allergen-tag free">Dairy-Free</span>
+            <span class="allergen-tag free">Gluten-Free</span>
+            <span class="allergen-tag may-contain">Peanuts</span>
+          </div>
+        </div>
+
+        <div class="allergen-card">
+          <div class="allergen-card-name">Keylime</div>
+          <div class="allergen-tag-list">
+            <span class="allergen-tag free">Nut-Free</span>
+            <span class="allergen-tag free">Dairy-Free</span>
+            <span class="allergen-tag free">Gluten-Free</span>
+            <span class="allergen-tag may-contain">Tree Nuts</span>
+          </div>
+        </div>
+
+        <div class="allergen-card">
+          <div class="allergen-card-name">Coconut Thai Basil</div>
+          <div class="allergen-tag-list">
+            <span class="allergen-tag contains">Tree Nuts</span>
+            <span class="allergen-tag free">Dairy-Free</span>
+            <span class="allergen-tag free">Gluten-Free</span>
+            <span class="allergen-tag may-contain">Peanuts</span>
+          </div>
+        </div>
+
+        <div class="allergen-card">
+          <div class="allergen-card-name">Peanut Vanilla</div>
+          <div class="allergen-tag-list">
+            <span class="allergen-tag contains">Peanuts</span>
+            <span class="allergen-tag free">Dairy-Free</span>
+            <span class="allergen-tag free">Gluten-Free</span>
+            <span class="allergen-tag may-contain">Tree Nuts</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="policy-section">
+      <h2>Common Allergens We Handle</h2>
+      <p>The following allergens are present in our kitchen environment and may appear in one or more of our products: tree nuts (including pistachio, almond, coconut), peanuts. Our facility does not regularly handle wheat, shellfish, fish, eggs, soy, or sesame, though we cannot make absolute guarantees. All of our sorbets are dairy-free by nature.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>Ingredient Changes</h2>
+      <p>Our recipes are seasonal and may change throughout the year as we introduce new flavors or source different ingredients. Allergen information on this page is updated as best we can, but we strongly recommend contacting us directly for the most current ingredient details before placing an order if you have any allergy concerns.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>Questions or Concerns</h2>
+      <p>We take allergen safety seriously and are happy to answer any questions about specific ingredients or preparation methods.</p>
+      <div class="contact-block">
+        <p>Email: <a href="mailto:detoursorbet@gmail.com">detoursorbet@gmail.com</a></p>
+        <p>Phone: <a href="tel:+14065291178">(406) 529-1178</a></p>
+        <p>Eliot, Maine</p>
+      </div>
+    </div>
+
+    <!-- Links to other legal pages -->
+    <div class="legal-nav">
+      <a href="privacy-policy.html">← Privacy Policy</a>
+      <a href="terms-of-use.html">Terms of Use →</a>
+    </div>
+
+    <div class="policy-note">
+      Note: Allergen information is provided in good faith based on current recipes and sourcing. Detour Sorbet LLC is not liable for reactions resulting from undisclosed allergies or cross-contact risks inherent to a shared kitchen. Customers with severe allergies assume responsibility for confirming ingredient details directly with us prior to purchase.
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="nav-logo">Detour Sorbet</span>
+    <span class="footer-copy">© 2025 Detour Sorbet LLC. All rights reserved.</span>
+    <div class="footer-legal">
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms-of-use.html">Terms of Use</a>
+      <a href="allergen-info.html">Allergen Info</a>
+    </div>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.policy-section, .allergen-warning').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Use — Detour Sorbet</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    @font-face {
+      font-family: 'NationalForest';
+      src: url('fonts/NationalForest.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    :root {
+      --color-cream:    #fdf8f2;
+      --color-blush:    #f5c9b3;
+      --color-coral:    #e8705a;
+      --color-mango:    #f5a623;
+      --color-dark:     #2c1f1a;
+      --color-mid:      #7a5c52;
+      --color-light:    #f0e8e0;
+      --font-display:   'Cormorant Garamond', serif;
+      --font-body:      'DM Sans', sans-serif;
+      --transition:     0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--color-cream);
+      color: var(--color-dark);
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ============================================================
+       NAVBAR
+       ============================================================ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 4rem;
+      background: rgba(253, 248, 242, 0.92);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 2px 24px rgba(44, 31, 26, 0.07);
+    }
+
+    .nav-logo {
+      font-family: 'NationalForest', var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--color-coral);
+      letter-spacing: 0.02em;
+    }
+
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--color-mid);
+      letter-spacing: 0.05em;
+      transition: color var(--transition);
+    }
+    .nav-back:hover { color: var(--color-coral); }
+
+    /* ============================================================
+       PAGE HERO STRIP
+       ============================================================ */
+    .page-hero {
+      padding: 9rem 4rem 4rem;
+      background: var(--color-light);
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, var(--color-blush) 0%, transparent 70%);
+      border-radius: 50%;
+      opacity: 0.5;
+    }
+    .page-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; left: 5%;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, #f7e27a 0%, transparent 70%);
+      border-radius: 50%;
+      opacity: 0.35;
+    }
+
+    .page-eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-coral);
+      margin-bottom: 1rem;
+      position: relative;
+      padding-left: 2rem;
+    }
+    .page-eyebrow::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 50%;
+      width: 1.4rem; height: 1px;
+      background: var(--color-coral);
+    }
+
+    .page-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 0.8rem;
+      position: relative;
+      z-index: 1;
+    }
+    .page-title em {
+      font-style: italic;
+      color: var(--color-coral);
+    }
+
+    .page-date {
+      font-size: 0.82rem;
+      color: var(--color-mid);
+      font-weight: 300;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================================
+       CONTENT AREA
+       ============================================================ */
+    .policy-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 5rem 4rem 7rem;
+    }
+
+    .policy-section {
+      margin-bottom: 3rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .policy-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .policy-section h2 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--color-dark);
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--color-blush);
+    }
+
+    .policy-section p {
+      font-size: 0.97rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--color-mid);
+    }
+
+    /* Highlighted warning block — used for allergen section */
+    .policy-highlight {
+      margin-top: 1rem;
+      padding: 1.2rem 1.5rem;
+      background: #fff8f0;
+      border-left: 3px solid var(--color-mango);
+      border-radius: 0 8px 8px 0;
+    }
+    .policy-highlight p {
+      font-size: 0.9rem;
+    }
+
+    /* Contact block */
+    .contact-block {
+      margin-top: 1rem;
+      padding: 1.2rem 1.5rem;
+      background: var(--color-light);
+      border-left: 3px solid var(--color-coral);
+      border-radius: 0 8px 8px 0;
+    }
+    .contact-block p {
+      margin-bottom: 0.3rem;
+      font-size: 0.9rem;
+    }
+    .contact-block a {
+      color: var(--color-coral);
+      transition: opacity var(--transition);
+    }
+    .contact-block a:hover { opacity: 0.75; }
+
+    /* Disclaimer note at bottom */
+    .policy-note {
+      margin-top: 3rem;
+      padding: 1.5rem 2rem;
+      background: var(--color-light);
+      border-radius: 12px;
+      font-size: 0.85rem;
+      color: var(--color-mid);
+      line-height: 1.7;
+      font-style: italic;
+    }
+
+    /* Link between legal pages */
+    .legal-nav {
+      display: flex;
+      gap: 1rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--color-blush);
+      flex-wrap: wrap;
+    }
+    .legal-nav a {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--color-coral);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: opacity var(--transition);
+    }
+    .legal-nav a:hover { opacity: 0.7; }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    footer {
+      background: var(--color-dark);
+      color: rgba(253, 248, 242, 0.6);
+      padding: 3rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    footer .nav-logo {
+      text-shadow:
+         1px  0px 0px white,
+        -1px  0px 0px white,
+         0px  1px 0px white,
+         0px -1px 0px white;
+    }
+
+    .footer-legal {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.78rem;
+    }
+    .footer-legal a { transition: color var(--transition); }
+    .footer-legal a:hover { color: var(--color-coral); }
+
+    .footer-copy { font-size: 0.78rem; }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 2rem; }
+      .page-hero { padding: 8rem 2rem 3rem; }
+      .policy-wrap { padding: 3rem 2rem 5rem; }
+      footer { padding: 2rem; flex-direction: column; text-align: center; }
+      .footer-legal { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <a href="index.html" class="nav-logo">Detour Sorbet</a>
+    <a href="index.html" class="nav-back">← Back to site</a>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="page-hero">
+    <span class="page-eyebrow">Legal</span>
+    <h1 class="page-title">Terms of <em>Use</em></h1>
+    <p class="page-date">Last updated: April 2025</p>
+  </div>
+
+  <!-- TERMS CONTENT -->
+  <div class="policy-wrap">
+
+    <div class="policy-section">
+      <h2>Acceptance of Terms</h2>
+      <p>By accessing or using detoursorbet.com, you agree to be bound by these Terms of Use. If you do not agree, please do not use the site. We reserve the right to update these terms at any time, and continued use of the site following any changes constitutes your acceptance of the revised terms.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>About This Site</h2>
+      <p>This website is operated by Detour Sorbet LLC and is intended for informational purposes — to showcase our products, share our story, and allow customers to initiate orders via email. It is not an automated e-commerce platform, and no purchase is completed directly through this site.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>Ordering &amp; Fulfillment</h2>
+      <p>Orders are placed by contacting us directly at <a href="mailto:orders@detoursorbet.com" style="color: var(--color-coral);">orders@detoursorbet.com</a>. Submitting an order inquiry does not guarantee product availability or confirm a sale. All orders are subject to our manual review and confirmation. Detour Sorbet reserves the right to decline or cancel any order at its discretion. Pricing and product availability are subject to change without notice.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>Intellectual Property</h2>
+      <p>All content on this site — including the Detour Sorbet name, logo, photography, written content, and design — is the property of Detour Sorbet LLC. Nothing on this site may be copied, reproduced, distributed, or used for commercial purposes without our express written permission.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>Food &amp; Allergen Disclaimer</h2>
+      <p>We make every effort to provide accurate ingredient and allergen information for our products. However, our sorbets are produced in a kitchen environment that may handle common allergens including nuts, dairy, and others.</p>
+      <div class="policy-highlight">
+        <p>If you have a severe food allergy, please contact us directly at <a href="mailto:detoursorbet@gmail.com" style="color: var(--color-coral);">detoursorbet@gmail.com</a> before placing an order. Detour Sorbet cannot guarantee a completely allergen-free product or environment.</p>
+      </div>
+    </div>
+
+    <div class="policy-section">
+      <h2>No Warranties</h2>
+      <p>This website is provided on an "as is" basis. Detour Sorbet makes no warranties, expressed or implied, regarding the accuracy, completeness, or availability of any content on this site. We do not guarantee uninterrupted or error-free access to the site.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>Limitation of Liability</h2>
+      <p>To the fullest extent permitted by law, Detour Sorbet LLC shall not be liable for any indirect, incidental, or consequential damages arising from your use of this website or our products. Our total liability for any claim related to this site shall not exceed the amount you paid for the order in question.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>External Links</h2>
+      <p>This site contains links to third-party platforms including Instagram. These links are provided for convenience only. Detour Sorbet has no control over the content or practices of external sites and accepts no responsibility for them.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>Governing Law</h2>
+      <p>These Terms of Use are governed by the laws of the State of Maine. Any disputes arising from your use of this site shall be subject to the exclusive jurisdiction of the courts of Maine.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>Contact</h2>
+      <p>If you have any questions about these Terms of Use, please reach out:</p>
+      <div class="contact-block">
+        <p>Email: <a href="mailto:detoursorbet@gmail.com">detoursorbet@gmail.com</a></p>
+        <p>Phone: <a href="tel:+14065291178">(406) 529-1178</a></p>
+        <p>Eliot, Maine</p>
+      </div>
+    </div>
+
+    <!-- Link to Privacy Policy -->
+    <div class="legal-nav">
+      <a href="privacy-policy.html">← View Privacy Policy</a>
+      <a href="allergen-info.html">View Allergen Info →</a>
+    </div>
+
+    <div class="policy-note">
+      Note: These terms reflect current business operations. As Detour Sorbet grows and adds features such as online payments or shipping, these terms should be reviewed and updated accordingly. Consulting a qualified attorney is recommended for significant business changes.
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="nav-logo">Detour Sorbet</span>
+    <span class="footer-copy">© 2025 Detour Sorbet LLC. All rights reserved.</span>
+    <div class="footer-legal">
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms-of-use.html">Terms of Use</a>
+      <a href="#">Allergen Info</a>
+    </div>
+  </footer>
+
+  <script>
+    // Fade in sections on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.policy-section').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
