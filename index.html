@@ -552,6 +552,16 @@
        PRODUCT CARDS
        Add/remove cards in the HTML to match your product catalog
        ============================================================ */
+       .flavor-card {
+      background: transparent;
+      box-shadow: none;
+    }
+    
+    .flavor-card-img {
+      background: none !important;
+    }
+
+    /*
     .flavor-card {
       background: white;
       border-radius: var(--radius);
@@ -562,7 +572,7 @@
     .flavor-card:hover {
       transform: translateY(-6px);
       box-shadow: 0 16px 48px rgba(44, 31, 26, 0.12);
-    }
+    }/*
 
     /* ============================================================
        CUSTOMIZE: Replace .flavor-card-img backgrounds with actual
@@ -1147,8 +1157,7 @@
 
   <!-- Pistachio -->
   <div class="flavor-card fade-in" data-category="classic">
-    <div class="flavor-card-img" visibility:hidden ">
-     <!-- This is the former gradient conatiner. style="background: linear-gradient(45deg, #a2ca00, #c5dc66);-->
+    <div class="flavor-card-img" style="background: linear-gradient(45deg, #a2ca00, #c5dc66);">
     <img src="images/Pistachio.png" alt="Pistachio">
     </div>
     <div class="flavor-card-body">
