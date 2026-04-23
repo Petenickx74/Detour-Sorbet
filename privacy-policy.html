@@ -26,6 +26,13 @@
         font-weight: normal;
         font-style: normal;
       }
+    
+     @font-face {
+      font-family: 'VSJohnMuirSans';
+      src: url('fonts/VSJohnMuirSans.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
 
     :root {
       --color-cream:    #fdf8f2;
@@ -67,7 +74,7 @@
       backdrop-filter: blur(12px);
       box-shadow: 0 2px 24px rgba(44, 31, 26, 0.07);
     }
-
+    
     .nav-logo {
       font-family: 'NationalForest', var(--font-display);
       font-size: 1.8rem;
@@ -76,6 +83,10 @@
       letter-spacing: 0.02em;
     }
 
+     footer .nav-logo {
+      font-family: 'VSJohnMuirSans', var(--font-display);
+    }
+    
     .nav-back {
       display: inline-flex;
       align-items: center;
