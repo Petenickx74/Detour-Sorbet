@@ -1,6 +1,14 @@
 export default function AboutSection() {
   return (
     <section id="about">
+      <div className="about-visual fade-in">
+        <img
+          src="/images/Blood orange.png"
+          alt="blood orange"
+          style={{ width: '100%', height: '500px', objectFit: 'cover', borderRadius: '16px' }}
+        />
+      </div>
+
       <div className="about-content fade-in">
         <span className="section-label">About</span>
         <h2 className="section-title">
@@ -12,14 +20,6 @@ export default function AboutSection() {
           coconut, and fruit. Ours is completely dairy free, no eggs, or gluten. Detour is 100%
           vegan/plant-based.
         </p>
-      </div>
-
-      <div className="about-visual fade-in">
-        <img
-          src="/images/Blood orange.png"
-          alt="blood orange"
-          style={{ width: '100%', height: '500px', objectFit: 'cover', borderRadius: '16px' }}
-        />
       </div>
     </section>
   );
