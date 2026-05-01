@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="images/detour sign 3.png" type="image/png">
+  <title>Detour Sorbet — It's crazy good.</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    @font-face {
+        font-family: 'NationalForest';
+        src: url('fonts/NationalForest.otf') format('opentype');
+        font-weight: normal;
+        font-style: normal;
+      }
+
+    @font-face {
+        font-family: 'VSJohnMuirSans';
+        src: url('fonts/VSJohnMuirSans.otf') format('opentype');
+        font-weight: normal;
+        font-style: normal;
+      }
+    
+    :root {
+      --color-cream:      #fdf8f2;
+      --color-blush:      #f5c9b3;
+      --color-coral:      #e8705a;
+      --color-mango:      #f5a623;
+      --color-mint:       #a8d5ba;
+      --color-lemon:      #f7e27a;
+      --color-dark:       #2c1f1a;
+      --color-mid:        #7a5c52;
+      --color-light:      #f0e8e0;
+
+      --font-display:     'Cormorant Garamond', serif;
+      --font-body:        'DM Sans', sans-serif;
+
+      --radius:           16px;
+      --transition:       0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+      
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--color-cream);
+      color: var(--color-dark);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    img { display: block; max-width: 100%; }
+    a  { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* CUSTOM CURSOR */
+    .cursor {
+      position: fixed;
+      width: 14px; height: 14px;
+      background: var(--color-coral);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+      mix-blend-mode: multiply;
+    }
+    .cursor.expand {
+      width: 40px; height: 40px;
+      background: var(--color-mango);
+    }
+    @media (max-width: 768px) {
+      .cursor { display: none; }
+    }
+    
+    /* NAVIGATION */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 4rem;
+      transition: background var(--transition), box-shadow var(--transition);
+    }
+    nav.scrolled {
+      background: rgba(253, 248, 242, 0.92);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 2px 24px rgba(44, 31, 26, 0.07);
+    }
+
+    .nav-logo {
+      font-family: 'NationalForest', var(--font-display);
+      font-size: 2.4rem;
+      font-weight: 600;
+      color: var(--color-coral);
+      letter-spacing: 0.0em;
+    }
+    footer .nav-logo {
+      font-family: 'VSJohnMuirSans', var(--font-display);
+    }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    .nav-links a {
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-mid);
+      transition: color var(--transition);
+    }
+    .nav-links a:hover { color: var(--color-coral); }
+
+    .nav-cta {
+      background: var(--color-coral);
+      color: var(--color-cream) !important;
+      padding: 0.6rem 1.4rem;
+      border-radius: 50px;
+      font-weight: 500 !important;
+      transition: background var(--transition), transform var(--transition) !important;
+    }
+    .nav-cta:hover {
+      background: var(--color-dark) !important;
+      transform: translateY(-1px);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--color-dark);
+      transition: var(--transition);
+    }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 4rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #hero::before {
+      content: '';
+      position: absolute;
+      top: -10%; right: -5%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, var(--color-blush) 0%, transparent 70%);
+      border-radius: 50%;
+      opacity: 0.5;
+      animation: float 8s ease-in-out infinite;
+    }
+    #hero::after {
+      content: '';
+      position: absolute;
+      bottom: -5%; left: 10%;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, var(--color-lemon) 0%, transparent 70%);
+      border-radius: 50%;
+      opacity: 0.4;
+      animation: float 10s ease-in-out infinite reverse;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-20px); }
+    }
+
+    .hero-text { position: relative; z-index: 1; }
+
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-coral);
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-left: 2rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 50%;
+      width: 1.4rem; height: 1px;
+      background: var(--color-coral);
+    }
+
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--color-dark);
+      margin-bottom: 1.5rem;
+    }
+    .hero-headline em {
+      font-style: italic;
+      color: var(--color-coral);
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--color-mid);
+      max-width: 440px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--color-coral);
+      color: var(--color-cream);
+      padding: 0.9rem 2rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+      box-shadow: 0 4px 20px rgba(232, 112, 90, 0.35);
+    }
+    .btn-primary:hover {
+      background: var(--color-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(44, 31, 26, 0.2);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--color-dark);
+      padding: 0.9rem 2rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      border: 1.5px solid var(--color-blush);
+      transition: border-color var(--transition), background var(--transition), transform var(--transition);
+    }
+    .btn-secondary:hover {
+      border-color: var(--color-coral);
+      background: var(--color-light);
+      transform: translateY(-2px);
+    }
+
+    .hero-visual {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-img-placeholder {
+      width: 420px;
+      height: 480px;
+      border-radius: 60% 40% 55% 45% / 50% 45% 55% 50%;
+      background: linear-gradient(135deg, var(--color-blush), var(--color-coral), var(--color-mango));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      animation: morph 8s ease-in-out infinite, float 6s ease-in-out infinite;
+      box-shadow: 0 20px 60px rgba(232, 112, 90, 0.3);
+    }
+    .hero-img-placeholder span { font-size: 1rem; color: white; font-weight: 500; margin-top: 0.5rem; }
+
+    @keyframes morph {
+      0%, 100% { border-radius: 60% 40% 55% 45% / 50% 45% 55% 50%; }
+      25%       { border-radius: 40% 60% 45% 55% / 55% 50% 50% 45%; }
+      50%       { border-radius: 50% 50% 40% 60% / 45% 55% 45% 55%; }
+      75%       { border-radius: 45% 55% 60% 40% / 60% 40% 55% 45%; }
+    }
+
+    .flavor-tag {
+      position: absolute;
+      background: white;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      animation: float 5s ease-in-out infinite;
+      white-space: nowrap;
+    }
+    .flavor-tag:nth-child(2) { top: 10%; right: -8%; animation-delay: -1s; background: var(--color-lemon); }
+    .flavor-tag:nth-child(3) { bottom: 20%; right: -10%; animation-delay: -3s; background: var(--color-mint); }
+    .flavor-tag:nth-child(4) { top: 25%; left: -10%; animation-delay: -2s; background: var(--color-blush); }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-mid);
+      animation: bounce 2s ease-in-out infinite;
+    }
+    .scroll-indicator::after {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--color-mid), transparent);
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* SECTION SHARED */
+    section { padding: 6rem 4rem; }
+
+    .section-label {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-coral);
+      margin-bottom: 1rem;
+      position: relative;
+      padding-left: 2rem;
+    }
+    .section-label::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 50%;
+      width: 1.4rem; height: 1px;
+      background: var(--color-coral);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .section-title em { font-style: italic; color: var(--color-coral); }
+
+    .section-sub {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--color-mid);
+      line-height: 1.7;
+      max-width: 560px;
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ABOUT */
+    #about {
+      background: var(--color-light);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .about-img-placeholder {
+      height: 500px;
+      border-radius: var(--radius);
+      background: linear-gradient(160deg, var(--color-mint), var(--color-lemon), var(--color-blush));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .about-img-placeholder::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 60%, rgba(44,31,26,0.15));
+    }
+
+    .about-stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--color-blush);
+    }
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: var(--color-coral);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--color-mid);
+      margin-top: 0.3rem;
+    }
+
+    /* FLAVORS */
+    #flavors { background: var(--color-cream); }
+    
+    .flavors-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .flavor-filter {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      border: 1.5px solid var(--color-blush);
+      background: transparent;
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--color-mid);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--color-coral);
+      border-color: var(--color-coral);
+      color: white;
+    }
+
+    .flavors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+      padding-bottom: 2.5rem;
+    }
+
+    .flavor-card {
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition);
+      cursor: pointer;
+    }
+    .flavor-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(44, 31, 26, 0.12);
+    }
+
+    .flavor-card-img {
+      height: 290px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      position: relative;
+    }
+    .flavor-card-img img {
+      width: 290px;
+      height: 290px;
+      object-fit: contain;
+    }
+    .flavor-badge {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      background: var(--color-dark);
+      color: white;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.7rem;
+      border-radius: 50px;
+    }
+    .flavor-badge.seasonal { background: var(--color-coral); }
+    .flavor-badge.new      { background: var(--color-mango); color: var(--color-dark); }
+
+    .flavor-card-body { display: none; }
+    .flavor-name {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 400;
+      margin-bottom: 0.3rem;
+    }
+    .flavor-desc {
+      font-size: 0.85rem;
+      color: var(--color-mid);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .flavor-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .flavor-price {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--color-coral);
+    }
+    .flavor-add {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--color-coral);
+      color: white;
+      border: none;
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--transition), transform var(--transition);
+    }
+    .flavor-add:hover {
+      background: var(--color-dark);
+      transform: scale(1.1);
+    }
+
+    /* ============================================================
+       FLAVOR CARD EXPAND — Overlay & expanded card
+       ============================================================ */
+    .flavor-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(44, 31, 26, 0.6);
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+    .flavor-overlay.active { display: flex; }
+
+    .flavor-expanded-card {
+      background: white;
+      border-radius: var(--radius);
+      width: min(560px, 90vw);
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 32px 80px rgba(44, 31, 26, 0.25);
+      animation: expandPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      line-height: 0; /* removes phantom space below img */
+    }
+
+    @keyframes expandPop {
+      from { transform: scale(0.8); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+
+    .expanded-img-area {
+      height: 520px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .expanded-img-area img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: inherit;
+    }
+
+    /* ============================================================
+       CAROUSEL CSS — uncomment this block to enable a multi-photo
+       carousel inside the expanded card.
+
+       HOW TO USE:
+       1. Uncomment all CSS rules in this block.
+       2. In each .flavor-card div, add:
+              data-images='["images/photo1.png","images/photo2.png"]'
+       3. In the overlay HTML below, swap the single <img> for the
+          carousel markup (see the comment there).
+       4. In the JS section, uncomment the "CAROUSEL JS" block
+          inside the openFlavor() function.
+       ============================================================ */
+    /*
+    .carousel-track { display: flex; transition: transform 0.35s ease; height: 100%; }
+    .carousel-track img { width: 100%; flex-shrink: 0; object-fit: cover; }
+    .carousel-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.85); border: none; border-radius: 50%;
+      width: 36px; height: 36px; cursor: pointer; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: background 0.2s;
+      line-height: 1;
+    }
+    .carousel-btn:hover { background: white; }
+    .carousel-prev { left: 0.75rem; }
+    .carousel-next { right: 0.75rem; }
+    .carousel-dots {
+      position: absolute; bottom: 0.6rem; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 6px;
+    }
+    .carousel-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,0.5); border: none; cursor: pointer; padding: 0;
+      transition: background 0.2s;
+    }
+    .carousel-dot.active { background: white; }
+    */
+
+    .expand-close-btn {
+      position: absolute;
+      top: 0.75rem; right: 0.75rem;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: rgba(44, 31, 26, 0.25);
+      border: none;
+      cursor: pointer;
+      color: white;
+      font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+      z-index: 10;
+      line-height: 1;
+    }
+    .expand-close-btn:hover { background: rgba(44, 31, 26, 0.5); }
+
+    /* PROCESS */
+    #process {
+      background: var(--color-dark);
+      color: var(--color-cream);
+    }
+    #process .section-title { color: var(--color-cream); }
+    #process .section-label { color: var(--color-mango); }
+    #process .section-label::before { background: var(--color-mango); }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 3.5rem;
+    }
+    .process-step {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      border-radius: var(--radius);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: background var(--transition), transform var(--transition);
+      position: relative;
+    }
+    .process-step:hover {
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-4px);
+    }
+    .process-step:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      right: -1.2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--color-coral);
+      font-size: 1.2rem;
+      z-index: 1;
+    }
+
+    .step-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .step-num {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      color: var(--color-coral);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .step-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 0.5rem;
+    }
+    .step-desc {
+      font-size: 0.85rem;
+      color: rgba(253, 248, 242, 0.55);
+      line-height: 1.6;
+    }
+
+    /* TESTIMONIALS */
+    #testimonials { background: var(--color-cream); }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .testimonial-card {
+      background: var(--color-light);
+      padding: 2rem;
+      border-radius: var(--radius);
+      position: relative;
+    }
+    .testimonial-card::before {
+      content: '"';
+      font-family: var(--font-display);
+      font-size: 5rem;
+      color: var(--color-blush);
+      position: absolute;
+      top: -0.5rem; left: 1.5rem;
+      line-height: 1;
+    }
+    .testimonial-text {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--color-dark);
+      margin-bottom: 1.5rem;
+      padding-top: 1.5rem;
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .testimonial-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--color-blush);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: var(--color-coral);
+      flex-shrink: 0;
+    }
+    .author-name { font-weight: 500; font-size: 0.9rem; }
+    .author-title { font-size: 0.78rem; color: var(--color-mid); }
+    .stars { color: var(--color-mango); font-size: 0.85rem; margin-bottom: 0.3rem; }
+
+    /* FIND US */
+    #findus {
+      background: var(--color-light);
+      text-align: center;
+    }
+    #findus .section-sub { margin: 0 auto 3rem; }
+
+    .locations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      text-align: left;
+      margin-bottom: 3rem;
+    }
+    .location-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      border-left: 3px solid var(--color-coral);
+    }
+    .location-type {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-coral);
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    .location-name {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+    }
+    .location-address {
+      font-size: 0.83rem;
+      color: var(--color-mid);
+      line-height: 1.5;
+    }
+
+    /* NEWSLETTER */
+    #newsletter {
+      background: linear-gradient(135deg, var(--color-coral), #c1503a);
+      color: white;
+      text-align: center;
+      padding: 5rem 4rem;
+    }
+    #newsletter .section-title { color: white; }
+    #newsletter .section-label { color: rgba(255,255,255,0.7); }
+    #newsletter .section-label::before { background: rgba(255,255,255,0.7); }
+    #newsletter .section-sub { color: rgba(255,255,255,0.8); margin: 0 auto 2.5rem; }
+
+    .newsletter-form {
+      display: flex;
+      max-width: 480px;
+      margin: 0 auto;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .newsletter-input {
+      flex: 1;
+      min-width: 220px;
+      padding: 0.85rem 1.5rem;
+      border-radius: 50px;
+      border: none;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      outline: none;
+      background: rgba(255,255,255,0.95);
+      color: var(--color-dark);
+    }
+    .newsletter-input::placeholder { color: var(--color-mid); }
+    .newsletter-submit {
+      padding: 0.85rem 2rem;
+      border-radius: 50px;
+      background: var(--color-dark);
+      color: white;
+      border: none;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition);
+    }
+    .newsletter-submit:hover {
+      background: black;
+      transform: translateY(-1px);
+    }
+    .newsletter-note {
+      margin-top: 1rem;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--color-dark);
+      color: rgba(253, 248, 242, 0.6);
+      padding: 4rem 4rem 2rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-brand .nav-logo { display: block; margin-bottom: 1rem; color: var(--color-coral); }
+    .footer-tagline {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .social-links { display: flex; gap: 0.75rem; }
+    .social-link {
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--transition);
+      color: white;
+      line-height: 0;
+      font-size: 0;
+    }
+    .social-link img {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      display: block;
+      margin: auto;
+    }
+    .social-link:hover { background: var(--color-coral); }
+
+    .footer-col h4 {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: white;
+      margin-bottom: 1.2rem;
+      font-weight: 500;
+    }
+    .footer-col ul { display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-col ul li a {
+      font-size: 0.85rem;
+      transition: color var(--transition);
+    }
+    .footer-col ul li a:hover { color: var(--color-coral); }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.78rem;
+    }
+    .footer-legal { display: flex; gap: 1.5rem; }
+    .footer-legal a { transition: color var(--transition); }
+    .footer-legal a:hover { color: var(--color-coral); }
+
+    /* MOBILE */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 2rem; }
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        inset: 0;
+        background: var(--color-cream);
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        z-index: 99;
+      }
+      .nav-links.open a { font-size: 1.2rem; }
+      .hamburger { display: flex; z-index: 101; }
+
+      #hero {
+        grid-template-columns: 1fr;
+        padding: 7rem 2rem 3rem;
+        text-align: center;
+      }
+      .hero-sub { margin: 0 auto 2rem; }
+      .hero-buttons { justify-content: center; }
+      .hero-visual { margin-top: 2rem; }
+      .hero-img-placeholder { width: 280px; height: 320px; }
+      .flavor-tag { display: none; }
+
+      #about {
+        grid-template-columns: 1fr;
+        padding: 4rem 2rem;
+        gap: 2.5rem;
+      }
+      .about-img-placeholder { height: 300px; }
+
+      section { padding: 4rem 2rem; }
+
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+
+      .process-step:not(:last-child)::after { display: none; }
+
+      .flavor-expanded-card { width: 92vw; }
+      .expanded-img-area { height: 70vw; max-height: 420px; }
+    }
+    @media (min-width: 901px) {
+      #about .about-content { order: 2; }
+      #about .about-visual  { order: 1; }
+    }
+    @media (max-width: 560px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      .about-stats { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+
+  <nav id="navbar">
+    <a href="#hero" class="nav-logo">Detour Sorbet</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#flavors">Flavors</a></li>
+      <li><a href="#findus">Find Us</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+
+  <section id="hero">
+    <div class="hero-text fade-in">
+      <span class="hero-eyebrow">Handcrafted in small batches</span>
+      <h1 class="hero-headline">
+        <em>Awesome</em> sorbet from Eliot, Maine! 
+      </h1>
+      <p class="hero-sub">
+        We create sorbet using as few ingredients as possible to create a pure, delicious experience - there are no shortcuts, no fillers, just awesome flavor.
+      </p>
+      <div class="hero-buttons">
+        <a href="#flavors" class="btn-primary">Explore Flavors ↓</a>
+      </div>
+    </div>
+
+    <div class="hero-visual fade-in">
+      <img
+        src="images/Pistachio cup2.png"
+        alt="Our sorbet"
+        style="width:100%; height:500px; object-fit:cover; border-radius:16px;"/>
+    <div class="scroll-indicator">Scroll</div>
+  </section>
+
+
+  <section id="about">
+    <div class="about-content fade-in">
+      <span class="section-label">About</span>
+      <h2 class="section-title">What is <em>Sorbet?</em></h2>
+      <p class="section-sub" style="margin-bottom: 1.2rem;">
+        What is sorbet? The common definition is a combination of fruit, sugar, and water.
+        What we do at Detour is expand upon that including a wide array of nuts, seeds, chocolates, coconut, and fruit. Ours is completely dairy free, no eggs, or gluten. Detour is 100% vegan/plant-based.
+      </p>
+    </div>
+    <div class="about-visual fade-in">
+      <img
+        src="images/Blood orange.png"
+        alt="blood orange"
+        style="width:100%; height:500px; object-fit:cover; border-radius:16px;"
+      />
+    </div>
+  </section>
+
+
+  <section id="flavors">
+    <div class="flavors-header fade-in">
+      <div>
+        <span class="section-label">Our Flavors</span>
+      </div>
+    </div>
+
+    <div class="flavors-grid">
+
+      <div class="flavor-card fade-in" data-category="classic">
+        <div class="flavor-card-img" style="background: linear-gradient(45deg, #a2ca00, #c5dc66);">
+          <img src="images/Pistachio.png" alt="Pistachio">
+        </div>
+        <div class="flavor-card-body">
+          <div class="flavor-name">Pistachio</div>
+        </div>
+      </div>
+
+      <div class="flavor-card fade-in" data-category="classic">
+        <div class="flavor-card-img" style="background: linear-gradient(45deg, #8c6449, #de9c6a);">
+          <img src="images/chocAlm.png" alt="Chocolate Almond">
+        </div>
+        <div class="flavor-card-body">
+          <div class="flavor-name">Chocolate Almond</div>
+        </div>
+      </div>
+
+      <div class="flavor-card fade-in" data-category="seasonal">
+        <div class="flavor-card-img" style="background: linear-gradient(45deg, #65483b, #8c6449);">
+          <img src="images/Diner Coffee.png" alt="Diner Coffee">
+        </div>
+        <div class="flavor-card-body">
+          <div class="flavor-name">Diner Coffee</div>
+        </div>
+      </div>
+
+      <div class="flavor-card fade-in" data-category="new">
+        <div class="flavor-card-img" style="background: linear-gradient(45deg, #dd5877, #dd9b69);">
+          <img src="images/PB&Jlid.png" alt="PB&J">
+        </div>
+        <div class="flavor-card-body">
+          <div class="flavor-name">PB&amp;J</div>
+        </div>
+      </div>
+
+      <div class="flavor-card fade-in" data-category="classic">
+        <div class="flavor-card-img" style="background: linear-gradient(45deg, #eaeaea, #feffff);">
+          <img src="images/Coconut.png" alt="Coconut">
+        </div>
+        <div class="flavor-card-body">
+          <div class="flavor-name">Coconut</div>
+        </div>
+      </div>
+
+      <div class="flavor-card fade-in" data-category="seasonal">
+        <div class="flavor-card-img" style="background: linear-gradient(45deg, #9efa55, #feffff);">
+          <img src="images/Key Lime.png" alt="Key Lime">
+        </div>
+        <div class="flavor-card-body">
+          <div class="flavor-name">Keylime</div>
+        </div>
+      </div>
+
+      <div class="flavor-card fade-in" data-category="classic">
+        <div class="flavor-card-img" style="background: linear-gradient(45deg, #00c16c, #fff9c4);">
+          <img src="images/CocoThaiB.png" alt="Coconut Thai Basil">
+        </div>
+        <div class="flavor-card-body">
+          <div class="flavor-name">Coconut Thai Basil</div>
+        </div>
+      </div>
+
+      <div class="flavor-card fade-in" data-category="classic">
+        <div class="flavor-card-img" style="background: linear-gradient(45deg, #fdcd6e, #feffff);">
+          <img src="images/Peanut Van.png" alt="Peanut Vanilla">
+        </div>
+        <div class="flavor-card-body">
+          <div class="flavor-name">Peanut Vanilla</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <section id="findus">
+    <div class="fade-in">
+      <span class="section-label">Find Us</span>
+      <h2 class="section-title">Where to get <em>your fix</em></h2>
+      <p class="section-sub">
+        Available at select markets, restaurants, and grocery stores across the region — or order direct.
+      </p>
+    </div>
+
+    <div class="locations-grid">
+
+      <div class="location-card fade-in">
+        <div class="location-type">Grocery</div>
+        <div class="location-name">Golden Harvest Produce Market</div>
+        <div class="location-address">47 State Rd, Kittery, ME 03904<br>Available year-round</div>
+      </div>
+
+      <div class="location-card fade-in">
+        <div class="location-type">Restaurant</div>
+        <div class="location-name">Sea Salt Fry Co</div>
+        <div class="location-address">231 Post Rd. Wells, ME 04090<br>On the dessert menu</div>
+      </div>
+
+      <div class="location-card fade-in">
+        <div class="location-type">Farm Stand</div>
+        <div class="location-name">Brandmoore Farms</div>
+        <div class="location-address">70 Sligo Rd, Rollinsford, NH 03869</div>
+        <div class="website"><a href="https://www.brandmoorefarm.com">brandmoorefarm.com</a></div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- FLAVOR EXPAND OVERLAY -->
+  <div class="flavor-overlay" id="flavorOverlay">
+    <div class="flavor-expanded-card" id="flavorExpandedCard">
+      <button class="expand-close-btn" id="flavorCloseBtn">✕</button>
+      <div class="expanded-img-area" id="expandedImgArea">
+        <img src="" alt="" id="expandedImgEl">
+        <!-- CAROUSEL: to enable multi-photo carousel, replace the <img> above with:
+
+        <div class="carousel-track" id="carouselTrack"></div>
+        <button class="carousel-btn carousel-prev" id="carouselPrev">&#8249;</button>
+        <button class="carousel-btn carousel-next" id="carouselNext">&#8250;</button>
+        <div class="carousel-dots" id="carouselDots"></div>
+
+        Then:
+        1. Uncomment the carousel CSS block in <style>
+        2. Add data-images='["images/photo1.png","images/photo2.png"]' to each .flavor-card div
+        3. Uncomment the CAROUSEL JS block inside openFlavor() in the <script>
+        -->
+      </div>
+    </div>
+  </div>
+
+
+  <footer>
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+        <span class="nav-logo">Detour Sorbet</span>
+        <p class="footer-tagline">
+          Small-batch, dairy-free sorbets made with real fruit and pure ingredients. Crafted with love in Eliot, Maine.
+        </p>
+        <div class="social-links">
+          <a href="https://www.instagram.com/detoursorbet/" class="social-link" aria-label="Instagram">
+            <img src="https://github.com/Petenickx74/Detour-Sorbet/blob/main/images/instalogo2.png?raw=true" alt="Instagram">
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#flavors">Flavors</a></li>
+          <li><a href="#findus">Find Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Ordering</h4>
+        <ul>
+          <li><a href="mailto:orders@detoursorbet.com">Order Online</a></li>
+          <li><a href="mailto:orders@detoursorbet.com">Wholesale</a></li>
+          <li><a href="mailto:orders@detoursorbet.com">Catering</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:sam@detoursorbet.com">sam@detoursorbet.com</a></li>
+          <li><a href="tel:+14065291178">(406) 529-1178</a></li>
+          <li><a href="#">Eliot, Maine</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2025 Detour LLC. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-of-use.html">Terms of Use</a>
+        <a href="allergen-info.html">Allergen Info</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <script>
+    // CUSTOM CURSOR
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top  = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
+    });
+
+    // NAVBAR SCROLL
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // MOBILE HAMBURGER
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => navLinks.classList.remove('open'));
+    });
+
+    // SCROLL FADE-IN
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const delay = (entry.target.closest('.flavors-grid, .testimonials-grid, .locations-grid, .process-steps') !== null)
+            ? Array.from(entry.target.parentElement.children).indexOf(entry.target) * 80
+            : 0;
+          setTimeout(() => entry.target.classList.add('visible'), delay);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // FLAVOR FILTER
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        document.querySelectorAll('.flavor-card').forEach(card => {
+          const show = filter === 'all' || card.dataset.category === filter;
+          card.style.display = show ? '' : 'none';
+        });
+      });
+    });
+
+    // ADD TO CART
+    document.querySelectorAll('.flavor-add').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const name  = btn.closest('.flavor-card').querySelector('.flavor-name').textContent;
+        const price = btn.closest('.flavor-card').querySelector('.flavor-price').textContent;
+        btn.textContent = '✓';
+        btn.style.background = '#2c1f1a';
+        setTimeout(() => {
+          btn.textContent = '+';
+          btn.style.background = '';
+        }, 1800);
+        console.log(`Added to cart: ${name} — ${price}`);
+      });
+    });
+
+    // SMOOTH SCROLL
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // ============================================================
+    // FLAVOR CARD EXPAND
+    // Click any flavor card to open an expanded overlay showing
+    // just the card's gradient background and product PNG.
+    // Click the ✕ button, the dark backdrop, or press Escape to close.
+    // ============================================================
+    (function () {
+      const overlay  = document.getElementById('flavorOverlay');
+      const closeBtn = document.getElementById('flavorCloseBtn');
+      const imgEl    = document.getElementById('expandedImgEl');
+      const imgArea  = document.getElementById('expandedImgArea');
+
+      function openFlavor(card) {
+        const src = card.querySelector('.flavor-card-img img')?.src || '';
+        const bg  = card.querySelector('.flavor-card-img')?.style.background || '';
+
+        imgEl.src = src;
+        imgEl.alt = '';
+        imgArea.style.background = bg;
+
+        /* ============================================================
+           CAROUSEL JS — uncomment this block to enable multi-photo carousel.
+
+           HOW TO USE:
+           1. Uncomment this entire block.
+           2. Add data-images='["images/photo1.png","images/photo2.png"]'
+              to each .flavor-card div in the HTML.
+           3. Uncomment the carousel CSS block in <style>.
+           4. In the overlay HTML, swap the single <img> for the
+              carousel markup (see the comment inside the overlay div).
+           ============================================================ */
+        /*
+        const images = JSON.parse(card.dataset.images || '[]');
+        if (images.length > 1) {
+          let current = 0;
+          const track = document.getElementById('carouselTrack');
+          const dots  = document.getElementById('carouselDots');
+
+          track.innerHTML = images.map(s => `<img src="${s}" alt="">`).join('');
+          dots.innerHTML  = images.map((_, i) =>
+            `<button class="carousel-dot${i === 0 ? ' active' : ''}" data-i="${i}"></button>`
+          ).join('');
+
+          function goTo(n) {
+            current = (n + images.length) % images.length;
+            track.style.transform = `translateX(-${current * 100}%)`;
+            dots.querySelectorAll('.carousel-dot').forEach((d, i) =>
+              d.classList.toggle('active', i === current));
+          }
+
+          document.getElementById('carouselPrev').onclick = () => goTo(current - 1);
+          document.getElementById('carouselNext').onclick = () => goTo(current + 1);
+          dots.querySelectorAll('.carousel-dot').forEach(d =>
+            d.addEventListener('click', () => goTo(+d.dataset.i)));
+
+          imgEl.style.display = 'none';
+          track.parentElement.style.display = 'flex';
+        } else {
+          imgEl.style.display = 'block';
+        }
+        */
+
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeFlavor() {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      document.querySelectorAll('.flavor-card').forEach(card => {
+        card.addEventListener('click', () => openFlavor(card));
+      });
+
+      closeBtn.addEventListener('click', closeFlavor);
+      overlay.addEventListener('click', e => { if (e.target === overlay) closeFlavor(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') closeFlavor(); });
+    })();
+  </script>
+
+</body>
+</html>
